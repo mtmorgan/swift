@@ -10,7 +10,7 @@
 swlist <-
     function(container, format=c("short", "long"))
 {
-    stopifnot(missing(container) || .isSingleString(container))
+    stopifnot(missing(container) || .isString(container))
     format <- match.arg(format)
 
     curl <- RCurl::getCurlHandle()

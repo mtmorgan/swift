@@ -26,8 +26,8 @@ swauth(USER = Sys.getenv("ST_USER"), KEY = Sys.getenv("ST_KEY"),
 
 \value{
 
-  An environment (returned invisibly) containing the user, key, and
-  authentication key / value pairs.
+  An list (invisibly) containing the user, key, and authentication key /
+  value pairs.
 
 }
 

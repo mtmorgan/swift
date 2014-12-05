@@ -17,12 +17,12 @@ swauth <-
     function(USER=Sys.getenv("ST_USER"), KEY=Sys.getenv("ST_KEY"),
              AUTH=Sys.getenv("ST_AUTH"))
 {
-    stopifnot(.isSingleString(USER))
-    stopifnot(.isSingleString(KEY))
-    stopifnot(.isSingleString(AUTH))
+    stopifnot(.isString(USER))
+    stopifnot(.isString(KEY))
+    stopifnot(.isString(AUTH))
 
     .state[["USER"]] <- USER
     .state[["KEY"]] <- KEY
     .state[["AUTH"]] <- AUTH
-    invisible(.state)
+    invisible(as.list(.state)[c("USER", "KEY", "AUTH")])
 }

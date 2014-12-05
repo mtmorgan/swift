@@ -49,9 +49,9 @@
 swdownload <-
     function(container, object, destination, overwrite=FALSE)
 {
-    stopifnot(.isSingleString(container))
-    stopifnot(missing(object) || .isSingleString(object))
-    stopifnot(missing(destination) || .isSingleString(destination))
+    stopifnot(.isString(container))
+    stopifnot(missing(object) || .isString(object))
+    stopifnot(missing(destination) || .isString(destination))
 
     if (!overwrite && !missing(destination) && file.exists(destination))
         stop("'destination' exists, and overwrite is 'FALSE'",
