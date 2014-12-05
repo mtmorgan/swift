@@ -1,6 +1,6 @@
 \name{swdownload}
 \alias{swdownload}
-\title{Download one or several objects}
+\title{Download containers or objects}
 \description{
 
   This function retrieves an object in a container, or all objects in a
