@@ -13,8 +13,8 @@ swlist(container, format=c("short", "long"))
 
 \arguments{
 
-  \item{container}{A character(1) specifying the container whose
-    contents is to be listed.}
+  \item{container}{(optional) A character(1) specifying the container
+    whose contents is to be listed. When missing, list all containers.}
 
   \item{format}{(Optional) format for return value; see \sQuote{value}
     section.}
