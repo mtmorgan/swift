@@ -1,7 +1,10 @@
 .swauth <-
     function(curl, state=.state)
 {
-    resp <- GET("https://tin.fhcrc.org/auth/v1.0",
+    if (!all(c("USER", "KEY", "AUTH") %in% ls(state)))
+        stop("set credentials with 'swauth()'")
+
+    resp <- GET(state[["AUTH"]],
                 config(httpheader=c(
                          `X-Auth-User`=state[["USER"]],
                          `X-Auth-Key`=state[["KEY"]])),

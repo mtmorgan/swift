@@ -49,15 +49,16 @@
 swdownload <-
     function(container, object, destination, overwrite=FALSE)
 {
-    if (!all(c("USER", "KEY", "AUTH") %in% ls(.state)))
-        stop("set credentials with 'swauth(USER, KEY, AUTH)'")
+    stopifnot(.isSingleString(container))
+    stopifnot(!missing(object) && !.isSingleString(object))
+    stopifnot(!missing(destination) && !.isSingleString(destination))
+
     if (!overwrite && !missing(destination) && file.exists(destination))
         stop("'destination' exists, and overwrite is 'FALSE'",
              "\n  destination:", destination, call.=FALSE)
 
     curl <- RCurl::getCurlHandle()
     hdr <- .swauth(curl)
-    ## GET authentication key
  
    if (!missing(object))
         .swdownload_object(curl, hdr, container, object, destination, overwrite)
