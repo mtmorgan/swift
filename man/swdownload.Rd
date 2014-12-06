@@ -1,16 +1,19 @@
 \name{swdownload}
 \alias{swdownload}
-\title{Download containers or objects}
+\alias{swfile}
+\title{Download and input containers or objects}
 \description{
 
-  This function retrieves an object in a container, or all objects in a
-  container, to a local destination file or directory. It is necessary
-  that authentication occurs before downloading; see
+  \code{swdownload} retrieves an object in a container, or all objects
+  in a container, to a local destination file or
+  directory. \code{swfile} provide read-only access to an object. It is
+  necessary that authentication occurs before downloading; see
   \code{\link{swauth}}.
 
 }
 \usage{
 swdownload(container, object, destination, overwrite = FALSE, ...)
+swfile(container, object)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -46,6 +49,14 @@ swdownload(container, object, destination, overwrite = FALSE, ...)
 
 }
 
+\details{
+
+  Currently, \code{swfile} is a simple wrapper around \code{swdownload};
+  it downloads the file to a local disk, where it is then available for
+  standard \R operations.
+
+}
+
 \value{
 
   A character(1) destination to which the container or object was
@@ -67,11 +78,13 @@ swdownload(container, object, destination, overwrite = FALSE, ...)
 \examples{
 \dontrun{
 fl = swdownload("mtm_swift", "svn-stats.txt")
+readLines(fl)
 ## All objects contained in 'Folder/'
 fl = swdownload("mtm_swift", prefix="Folder/")
+dir(fl, recursive=TRUE)
 ## All objects contained in 'Folder/', up to first occurrence of '/'
 fl = swdownload("mtm_swift", prefix="Folder/", delimiter="/")
-read.csv(fl)
+readLines(swfile(container, object))
 }
 }
 

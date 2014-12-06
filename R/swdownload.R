@@ -57,3 +57,11 @@ swdownload <-
     else
         .swdownload_container(curl, hdr, container, destination, overwrite, ...)
 }
+
+swfile <-
+    function(container, object)
+{
+    stopifnot(.isString(container))
+    stopifnot(.isString(object))
+    swdownload(container, object)
+}
