@@ -27,6 +27,14 @@
     destination
 }
 
+.RESTdelete <-
+    function(curl, hdr, url)
+{
+    auth <- sprintf("%s: %s", "X-Auth-Token", hdr[["X-Storage-Token"]])
+    resp <- DELETE(url, config(httpheader=auth))
+    stop_for_status(resp)
+}
+
 .RESTcontent <-
     function(curl, hdr, url)
 {

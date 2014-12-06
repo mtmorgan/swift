@@ -77,6 +77,7 @@ swfile(container, object)
 
 \examples{
 \dontrun{
+swauth()
 fl = swdownload("mtm_swift", "svn-stats.txt")
 readLines(fl)
 ## All objects contained in 'Folder/'
