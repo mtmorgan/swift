@@ -1,21 +1,35 @@
-.RESTquery <-
-    function(...)
+.RESTurl <-
+    function(url, container=NULL, object=NULL, ...)
 {
     args<- list(...)
     args <- args[!vapply(args, is.null, logical(1))]
     if (!(length(names(args)) == length(args) &&
           all(vapply(names(args), .isString, logical(1)))))
-        stop("all .RESTquery arguments must be named")
+        stop("all .RESTquery '...' arguments must be named")
     if (!all(vapply(args, length, integer(1)) == 1L))
-        stop("all .RESTquery arguments must be length 1")
-    ans <- paste(names(args), unname(args), sep="=", collapse="&")
-    if (nzchar(ans)) sprintf("?%s", ans) else ans
+        stop("all .RESTquery '...' arguments must be length 1")
+
+    query <- paste(names(args), unname(args), sep="=", collapse="&")
+    query <- if (nzchar(query)) sprintf("?%s", query) else ""
+    paste0(url, sprintf("/%s", container), sprintf("/%s", object), query)
 }
 
-.swcontent <-
-    function(curl, hdr, path)
+.RESTdownload <-
+    function(curl, hdr, url, destination, overwrite)
 {
-    url <- sprintf("%s%s", hdr[["X-Storage-Url"]], path)
+    auth <- sprintf("%s: %s", "X-Auth-Token", hdr[["X-Storage-Token"]])
+    resp <- GET(url, config(httpheader=auth), progress(), 
+                write_disk(destination, overwrite=overwrite),
+                curl=curl)
+    cat("\n")
+    stop_for_status(resp)
+
+    destination
+}
+
+.RESTcontent <-
+    function(curl, hdr, url)
+{
     auth <- sprintf("%s: %s", "X-Auth-Token", hdr[["X-Storage-Token"]])
     objects <- GET(url, config(httpheader=auth), curl=curl)
     stop_for_status(objects)

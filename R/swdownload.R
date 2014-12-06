@@ -6,15 +6,8 @@
     if (!file.exists(dirname(destination)))
         dir.create(dirname(destination), recursive=TRUE)
 
-    url <- sprintf("%s/%s/%s", hdr[["X-Storage-Url"]], container, object)
-    auth <- sprintf("%s: %s", "X-Auth-Token", hdr[["X-Storage-Token"]])
-    resp <- GET(url, config(httpheader=auth), progress(), 
-                write_disk(destination, overwrite=overwrite),
-                curl=curl)
-    cat("\n")
-    stop_for_status(resp)
-
-    destination
+    url <- .RESTurl(hdr[["X-Storage-Url"]], container, object)
+    .RESTdownload(curl, hdr, url, destination, overwrite)
 }
 
 .swdownload_container <-
@@ -30,10 +23,10 @@
         dir.create(destination, recursive=TRUE)
 
     repeat {                            # Objects
-        query <- .RESTquery(format="json", prefix=prefix,
-            delimiter=delimiter, marker=marker, ...)
-        path <- sprintf("/%s%s", container, query)
-        contents <- .swcontent(curl, hdr, path)
+        url <- .RESTurl(hdr[["X-Storage-Url"]], container,
+            format="json", prefix=prefix, delimiter=delimiter,
+            marker=marker, ...)
+        contents <- .RESTcontent(curl, hdr, url)
         if (identical(attr(contents, "status"), "complete"))
             break
         marker <- attr(contents, "marker")

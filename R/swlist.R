@@ -1,5 +1,5 @@
 swlist <-
-    function(container, format=c("short", "long"), ...,
+    function(container=NULL, format=c("short", "long"), ...,
              prefix=NULL, delimiter=NULL)
 {
     stopifnot(missing(container) || .isString(container))
@@ -14,12 +14,9 @@ swlist <-
     result <- new.env(parent=emptyenv())
     ith <- 0L
     repeat {
-        path <- .RESTquery(format="json", prefix=prefix, delimiter=delimiter,
-            marker=marker, ...)
-        if (!missing(container))
-            path <- sprintf("/%s%s", container, path)
-
-        contents <- .swcontent(curl, hdr, path)
+        url <- .RESTurl(hdr[["X-Storage-Url"]], container, format="json",
+            prefix=prefix, delimiter=delimiter, marker=marker, ...)
+        contents <- .RESTcontent(curl, hdr, url)
         if (identical(attr(contents, "status"), "complete"))
             break
         marker <- attr(contents, "marker")
