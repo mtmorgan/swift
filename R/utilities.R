@@ -17,3 +17,12 @@
            (missing(min) || x >= min) && (missing(max) || x <= max)
        }
 }
+
+.NULLas <- function(x, as=NA_character_) {
+    if (is.list(x)) {
+        mapply(function(x) if (is.null(x)) as else x, x)
+    } else {
+        x[is.null(x)] <- as
+        x
+    }
+}

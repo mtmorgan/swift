@@ -1,43 +1,44 @@
-.swnull <- function(x, as=NA_character_) {
-    if (is.list(x)) {
-        mapply(function(x) if (is.null(x)) as else x, x)
-    } else {
-        x[is.null(x)] <- as
-        x
-    }
-}
-
 swlist <-
-    function(container, format=c("short", "long"))
+    function(container, format=c("short", "long"), ...,
+             prefix=NULL, delimiter=NULL)
 {
     stopifnot(missing(container) || .isString(container))
     format <- match.arg(format)
+    stopifnot(is.null(prefix) || .isString(prefix))
+    stopifnot(is.null(delimiter) || .isString(delimiter, nchar=1L))
+    marker <- NULL
 
     curl <- RCurl::getCurlHandle()
     hdr <- .swauth(curl)
+    
+    result <- new.env(parent=emptyenv())
+    ith <- 0L
+    repeat {
+        path <- .RESTquery(format="json", prefix=prefix, delimiter=delimiter,
+            marker=marker, ...)
+        if (!missing(container))
+            path <- sprintf("/%s%s", container, path)
 
-    url <- if (missing(container)) {
-        sprintf("%s?format=json", hdr[["X-Storage-Url"]])
-    } else {
-        sprintf("%s/%s?format=json", hdr[["X-Storage-Url"]], container)
+        contents <- .swcontent(curl, hdr, path)
+        if (identical(attr(contents, "status"), "complete"))
+            break
+        marker <- attr(contents, "marker")
+
+        ith <- ith + 1L
+        bytes <- sapply(contents, "[[", "bytes")
+        last_modified <- .NULLas(sapply(contents, "[[", "last_modified"))
+        name <- .NULLas(sapply(contents, "[[", "name"))
+        result[[as.character(ith)]] <- switch(format, short={
+            FUN <- utils:::format.object_size
+            size <- sapply(bytes, FUN, "auto")
+            data.frame(size=size, last_modified=last_modified, name=name,
+                       stringsAsFactors=FALSE)
+        }, long={
+            hash <- .NULLas(sapply(contents, "[[", "hash"))
+            data.frame(bytes=bytes, last_modified=last_modified, hash=hash,
+                       name=name, stringsAsFactors=FALSE)
+        })
     }
-    auth <- sprintf("%s: %s", "X-Auth-Token", hdr[["X-Storage-Token"]])
-    objects <- GET(url, config(httpheader=auth), curl=curl)
-    stop_for_status(objects)
 
-    content <- content(objects)
-    bytes <- sapply(content, "[[", "bytes")
-    last_modified <- .swnull(sapply(content, "[[", "last_modified"))
-    name <- .swnull(sapply(content, "[[", "name"))
-
-    switch(format, short={
-        FUN <- utils:::format.object_size
-        size <- sapply(bytes, FUN, "auto")
-        data.frame(size=size, last_modified=last_modified, name=name,
-                   stringsAsFactors=FALSE)
-    }, long={
-        hash <- .swnull(sapply(content, "[[", "hash"))
-        data.frame(bytes=bytes, last_modified=last_modified, hash=hash,
-                   name=name, stringsAsFactors=FALSE)
-    })
+    do.call(rbind, as.list(result)[as.character(seq_along(result))])
 }

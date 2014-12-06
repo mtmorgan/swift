@@ -8,7 +8,8 @@
 
 }
 \usage{
-swlist(container, format=c("short", "long"))
+swlist(container, format=c("short", "long"), ...,
+    prefix=NULL, delimiter=NULL)
 }
 
 \arguments{
@@ -18,6 +19,16 @@ swlist(container, format=c("short", "long"))
 
   \item{format}{(Optional) format for return value; see \sQuote{value}
     section.}
+
+  \item{...}{Additional arguments, for internal use.}
+
+
+  \item{prefix}{A character(1) value that restricts listings to objects
+    whose paths begin with this value.}
+
+  \item{delimiter}{A single-letter character(1). Restricts listings
+    to objects that are nested in the container, from the end of
+    the prefix (if any) to the first occurrence of this character.}
 
 }
 
@@ -39,7 +50,14 @@ swlist(container, format=c("short", "long"))
   Martin Morgan (\url{mailto:mtmorgan@fredhutch.org})
 }
 
-\seealso{\code{swauth}, \code{swdownload}}
+\seealso{
+
+  \code{swauth}, \code{swdownload}
+
+  The OpenStack documentation,
+  \url{http://docs.openstack.org/api/openstack-object-storage/1.0/content/ch_object-storage-dev-overview.html}
+
+}
 
 \examples{
 \dontrun{
