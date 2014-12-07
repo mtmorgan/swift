@@ -8,7 +8,7 @@
 
 }
 \usage{
-swlist(container, format=c("short", "long"), ...,
+swlist(container, format=c("short", "abbrv", "long"), ...,
     prefix=NULL, delimiter=NULL)
 }
 
@@ -38,6 +38,8 @@ swlist(container, format=c("short", "long"), ...,
   objects in the container, and columns \code{size} (object size, in
   human-readable form), \code{last_modified} (last modification date),
   and \code{name} (object name).
+
+  For \code{format="abbrv"}, a character vector of object names.
 
   For \code{format="long"}, a data frame with as many rows as there are
   objects in the container, and columns \code{bytes} (object size, in

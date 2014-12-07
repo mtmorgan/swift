@@ -1,5 +1,5 @@
 swlist <-
-    function(container=NULL, format=c("short", "long"), ...,
+    function(container=NULL, format=c("short", "abbrv", "long"), ...,
              prefix=NULL, delimiter=NULL)
 {
     stopifnot(missing(container) || .isString(container))
@@ -25,7 +25,9 @@ swlist <-
         bytes <- sapply(contents, "[[", "bytes")
         last_modified <- .NULLas(sapply(contents, "[[", "last_modified"))
         name <- .NULLas(sapply(contents, "[[", "name"))
-        result[[as.character(ith)]] <- switch(format, short={
+        result[[as.character(ith)]] <- switch(format, abbrv={
+            data.frame(name=name, stringsAsFactors=FALSE)
+        }, short={
             FUN <- utils:::format.object_size
             size <- sapply(bytes, FUN, "auto")
             data.frame(size=size, last_modified=last_modified, name=name,
@@ -37,5 +39,9 @@ swlist <-
         })
     }
 
-    do.call(rbind, as.list(result)[as.character(seq_along(result))])
+    df <- do.call(rbind, as.list(result)[as.character(seq_along(result))])
+    rownames(df) <- NULL
+    if (format == "abbrv")
+        df$name
+    else df
 }
