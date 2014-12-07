@@ -18,6 +18,12 @@
        }
 }
 
+.isLogical <-
+    function(x, na.ok=FALSE)
+{
+    !missing(x) && is.logical(x) && length(x) == 1L && (na.ok || !is.na(x))
+}
+
 .NULLas <- function(x, as=NA_character_) {
     if (is.list(x)) {
         mapply(function(x) if (is.null(x)) as else x, x)

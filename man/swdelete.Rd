@@ -7,7 +7,7 @@
 
 }
 \usage{
-swdelete(container, objects)
+swdelete(container, objects, verbose=TRUE)
 }
 
 \arguments{
@@ -16,7 +16,10 @@ swdelete(container, objects)
     contents is to be listed. When missing, list all containers.}
 
   \item{objects}{A character() vector specifying one or more objects in
-  the container.}
+    the container.}
+
+  \item{verobse}{A logical(1) specifying level of information provided
+    during function evaluation.}
 
 }
 
