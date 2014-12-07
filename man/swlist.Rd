@@ -1,21 +1,25 @@
 \name{swlist}
 \alias{swlist}
-\title{Content listings}
+\alias{swexists}
+\title{Container listing and other queries}
 \description{
 
-  This function lists the contents of swift containers, including the
-  size and last modification date.
+  List or test the existence of the contents of swift containers.
+
 
 }
 \usage{
 swlist(container, format=c("short", "abbrv", "long"), ...,
     prefix=NULL, delimiter=NULL)
+swexists(container, objects)
 }
 
 \arguments{
 
   \item{container}{(optional) A character(1) specifying the container
     whose contents is to be listed. When missing, list all containers.}
+
+  \item{objects}{A character() specifying object paths.}
 
   \item{format}{(Optional) format for return value; see \sQuote{value}
     section.}
@@ -33,6 +37,11 @@ swlist(container, format=c("short", "abbrv", "long"), ...,
 }
 
 \value{
+
+  \code{swexists} returns a named logical vector indicating whether the
+  object exists in the container.
+
+  \code{swlist} returns a vector or data frame, as follows:
 
   For \code{format="short"}, a data frame with as many rows as there are
   objects in the container, and columns \code{size} (object size, in
