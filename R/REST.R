@@ -14,6 +14,16 @@
     paste0(url, sprintf("/%s", container), sprintf("/%s", object), query)
 }
 
+.RESTupload <-
+    function(curl, hdr, url, source)
+{
+    auth <- sprintf("%s: %s", "X-Auth-Token", hdr[["X-Storage-Token"]])
+    resp <- PUT(url, config(httpheader=auth), body=upload_file(source))
+    stop_for_status(resp)
+    
+    source
+}
+
 .RESTdownload <-
     function(curl, hdr, url, destination, overwrite)
 {
