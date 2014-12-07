@@ -16,12 +16,11 @@ swdelete <-
     function(container, objects)
 {
     stopifnot(.isString(container))
-    stopifnot(.isString(objects))
+    stopifnot(is.character(objects) || !anyNA(objects))
 
     curl <- RCurl::getCurlHandle()
     hdr <- .swauth(curl)
 
     status <- sapply(objects, .swdelete, curl, hdr, container)
-
     invisible(sprintf("%s/%s", container, objects)[status])
 }

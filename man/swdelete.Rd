@@ -3,7 +3,7 @@
 \title{Object deletion}
 \description{
 
-  This function removes one or more objects from a container.
+  Delete objects from containers.
 
 }
 \usage{
@@ -16,13 +16,15 @@ swdelete(container, objects)
     contents is to be listed. When missing, list all containers.}
 
   \item{objects}{A character() vector specifying one or more objects in
-  the container to be deleted.}
+  the container.}
 
 }
 
 \value{
 
-  A character() vector of successfully deleted objects, invisibly.
+  \code{swdelete} returns a named logical vector indicating whether the
+  object was successfully deleted. A warning summarizes attempts to
+  delete non-existent objects.
 
 }
 
