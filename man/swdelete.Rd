@@ -18,7 +18,7 @@ swdelete(container, objects, verbose=TRUE)
   \item{objects}{A character() vector specifying one or more objects in
     the container.}
 
-  \item{verobse}{A logical(1) specifying level of information provided
+  \item{verbose}{A logical(1) specifying level of information provided
     during function evaluation.}
 
 }
