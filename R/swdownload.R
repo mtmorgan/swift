@@ -31,9 +31,12 @@
             break
         marker <- attr(contents, "marker")
 
-        for (object in contents)
-            .swdownload_object(curl, hdr, container, object=object$name,
-                destination=file.path(destination, object$name), overwrite)
+        contents <- contents[vapply(contents, length, integer(1)) == 5L]
+        for (content in contents) {
+            object <- content[["name"]]
+            .swdownload_object(curl, hdr, container, object=object,
+                destination=file.path(destination, object), overwrite)
+        }
     }
     
     destination

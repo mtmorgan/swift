@@ -59,7 +59,6 @@
         marker <- if ("subdir" %in% names(last)) {
             last[["subdir"]]
         } else last[["name"]]
-        contents <- contents[vapply(contents, length, integer(1)) == 5L]
     } else {
         status <- "complete"
     }

@@ -20,6 +20,12 @@ swlist <-
         if (identical(attr(contents, "status"), "complete"))
             break
         marker <- attr(contents, "marker")
+        idx <- if (is.null(container)) {
+            !grepl("^\\.trash.*", vapply(contents, "[[", character(1), "name"))
+        } else {
+            vapply(contents, length, integer(1)) == 5L
+        }
+        contents <- contents[idx]
 
         ith <- ith + 1L
         bytes <- sapply(contents, "[[", "bytes")
