@@ -63,7 +63,7 @@ swexists(container, objects)
 
 \seealso{
 
-  \code{swauth}, \code{swdownload}
+  \code{\link{swauth}}, \code{\link{swdownload}}
 
   The OpenStack documentation,
   \url{http://docs.openstack.org/api/openstack-object-storage/1.0/content/ch_object-storage-dev-overview.html}
