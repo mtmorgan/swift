@@ -9,7 +9,9 @@
     if (!all(vapply(args, length, integer(1)) == 1L))
         stop("all .RESTquery '...' arguments must be length 1")
 
-    query <- paste(names(args), unname(args), sep="=", collapse="&")
+    query <- paste(RCurl::curlEscape(names(args)),
+                   RCurl::curlEscape(unname(args)),
+                   sep="=", collapse="&")
     query <- if (nzchar(query)) sprintf("?%s", query) else ""
     paste0(url, sprintf("/%s", container), sprintf("/%s", object), query)
 }
