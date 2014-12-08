@@ -16,9 +16,11 @@
 }
 
 swdelete <-
-    function(container, objects, verbose=TRUE)
+    function(container, objects, ..., verbose=TRUE)
 {
     stopifnot(.isString(container))
+    if (missing(objects))
+        objects <- swlist(container, ..., format="abbrv")
     stopifnot(is.character(objects) || !anyNA(objects))
     stopifnot(.isLogical(verbose))
 

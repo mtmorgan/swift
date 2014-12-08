@@ -7,7 +7,7 @@
 
 }
 \usage{
-swdelete(container, objects, verbose=TRUE)
+swdelete(container, objects, ..., verbose=TRUE)
 }
 
 \arguments{
@@ -17,6 +17,9 @@ swdelete(container, objects, verbose=TRUE)
 
   \item{objects}{A character() vector specifying one or more objects in
     the container.}
+
+  \item{...}{If \code{objects} is missing, use \code{swlist(container,
+      ..., format="abbrv")} to identify objects to be deleted.}
 
   \item{verbose}{A logical(1) specifying level of information provided
     during function evaluation.}
@@ -37,7 +40,7 @@ swdelete(container, objects, verbose=TRUE)
 
 \seealso{
 
-  \code{swauth}
+  \code{\link{swauth}}, \code{\link{swlist}}.
 
   The OpenStack documentation,
   \url{http://docs.openstack.org/api/openstack-object-storage/1.0/content/ch_object-storage-dev-overview.html}
@@ -47,8 +50,8 @@ swdelete(container, objects, verbose=TRUE)
 \examples{
 \dontrun{
 swauth()
-swlist("mtm_swift")
-swdelete("mtm_swift", "svn-counts.txt")
+swdelete("mtm_swift", "my/svn-counts.txt") # object "my/svn-counts.txt"
+swdelete("mtm_swift", prefix="my/log")     # objects with prefix 'my/log'
 }
 }
 
