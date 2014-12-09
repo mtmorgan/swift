@@ -1,3 +1,12 @@
+.RESTauth <-
+    function(curl, user, key, auth)
+{
+    httpheader <- c(`X-Auth-User`=user, `X-Auth-Key`=key)
+    resp <- GET(auth, config(httpheader=httpheader), curl=curl)
+    stop_for_status(resp)
+    headers(resp)
+}
+
 .RESTurl <-
     function(url, container=NULL, object=NULL, ...)
 {
@@ -27,6 +36,17 @@
     source
 }
 
+.RESTread <-
+    function(curl, hdr, url, as, type)
+{
+    auth <- sprintf("%s: %s", "X-Auth-Token", hdr[["X-Storage-Token"]])
+    object <- GET(url, config(httpheader=auth), progress(), curl=curl)
+    cat("\n")
+    stop_for_status(object)
+
+    content(object, as=as, type=type)
+}
+
 .RESTdownload <-
     function(curl, hdr, url, destination, overwrite)
 {
@@ -48,7 +68,7 @@
     stop_for_status(resp)
 }
 
-.RESTcontent <-
+.RESTmetadata <-
     function(curl, hdr, url)
 {
     auth <- sprintf("%s: %s", "X-Auth-Token", hdr[["X-Storage-Token"]])

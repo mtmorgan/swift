@@ -16,7 +16,7 @@ swlist <-
     repeat {
         url <- .RESTurl(hdr[["X-Storage-Url"]], container, format="json",
             prefix=prefix, delimiter=delimiter, marker=marker, ...)
-        contents <- .RESTcontent(curl, hdr, url)
+        contents <- .RESTmetadata(curl, hdr, url)
         if (identical(attr(contents, "status"), "complete"))
             break
         marker <- attr(contents, "marker")

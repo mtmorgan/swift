@@ -4,13 +4,7 @@
     if (!all(c("USER", "KEY", "AUTH") %in% ls(state)))
         stop("set credentials with 'swauth()'")
 
-    resp <- GET(state[["AUTH"]],
-                config(httpheader=c(
-                         `X-Auth-User`=state[["USER"]],
-                         `X-Auth-Key`=state[["KEY"]])),
-                curl=curl)
-    stop_for_status(resp)
-    headers(resp)
+    .RESTauth(curl, state[["USER"]], state[["KEY"]], state[["AUTH"]])
 }
 
 swauth <-

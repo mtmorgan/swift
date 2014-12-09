@@ -26,7 +26,7 @@
         url <- .RESTurl(hdr[["X-Storage-Url"]], container,
             format="json", prefix=prefix, delimiter=delimiter,
             marker=marker, ...)
-        contents <- .RESTcontent(curl, hdr, url)
+        contents <- .RESTmetadata(curl, hdr, url)
         if (identical(attr(contents, "status"), "complete"))
             break
         marker <- attr(contents, "marker")
@@ -59,12 +59,4 @@ swdownload <-
         .swdownload_object(curl, hdr, container, object, destination, overwrite)
     else
         .swdownload_container(curl, hdr, container, destination, overwrite, ...)
-}
-
-swfile <-
-    function(container, object)
-{
-    stopifnot(.isString(container))
-    stopifnot(.isString(object))
-    swdownload(container, object)
 }

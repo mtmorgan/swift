@@ -1,21 +1,20 @@
 \name{swdownload}
 \alias{swdownload}
-\alias{swfile}
 \title{Download and input containers or objects}
+
 \description{
 
   \code{swdownload} retrieves an object in a container, or all objects
-  in a container, to a local destination file or
-  directory. \code{swfile} provide read-only access to an object. It is
+  in a container, to a local destination file or directory.  It is
   necessary that authentication occurs before downloading; see
   \code{\link{swauth}}.
 
 }
+
 \usage{
 swdownload(container, object, destination, overwrite = FALSE, ...)
-swfile(container, object)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
 
   \item{container}{A character(1) name of the container download.}
@@ -46,7 +45,6 @@ swfile(container, object)
 
     }
   }
-
 }
 
 \details{
@@ -59,8 +57,8 @@ swfile(container, object)
 
 \value{
 
-  A character(1) destination to which the container or object was
-  downloaded.
+  A character(1) destination (path on the local hard drive) to which the
+  container or object was downloaded.
   
 }
 
@@ -68,7 +66,7 @@ swfile(container, object)
 
 \seealso{
 
-  \code{\link{swauth}}
+  \code{\link{swauth}}, \code{\link{swread}}.
 
   The OpenStack documentation,
   \url{http://docs.openstack.org/api/openstack-object-storage/1.0/content/ch_object-storage-dev-overview.html}
@@ -85,7 +83,6 @@ fl = swdownload("mtm_swift", prefix="Folder/")
 dir(fl, recursive=TRUE)
 ## All objects contained in 'Folder/', up to first occurrence of '/'
 fl = swdownload("mtm_swift", prefix="Folder/", delimiter="/")
-readLines(swfile(container, object))
 }
 }
 
