@@ -1,5 +1,5 @@
 Package: swift
-Version: 0.0.11
+Version: 0.0.12
 Title: Access 'swift' storage buckets
 Authors@R: person("Martin", "Morgan", email="mtmorgan@fredhutch.org",
     role=c("aut", "cre"))
