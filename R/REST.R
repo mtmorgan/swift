@@ -13,7 +13,8 @@
                    RCurl::curlEscape(unname(args)),
                    sep="=", collapse="&")
     query <- if (nzchar(query)) sprintf("?%s", query) else ""
-    paste0(url, sprintf("/%s", container), sprintf("/%s", object), query)
+    paste0(url, sprintf("/%s", RCurl::curlEscape(container)),
+           sprintf("/%s", RCurl::curlEscape(object)), query)
 }
 
 .RESTupload <-
