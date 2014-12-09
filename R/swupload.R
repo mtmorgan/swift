@@ -35,7 +35,7 @@ swupload <-
     }
     toolarge <- file.info(paths)$size > .SW_UPLOAD_MAX_SIZE
     if (any(toolarge))
-        stop(sum(toolarge), " files > 5 Gb cannot be uploaded (yet):",
+        stop(sum(toolarge), " files > 5 GB cannot be uploaded (yet):",
              "\n  ", paste(sQuote(paths[toolarge]), collapse="\n  "))
 
     if (missing(prefix)) {
