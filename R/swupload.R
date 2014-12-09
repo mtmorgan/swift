@@ -33,10 +33,7 @@ swupload <-
     } else {
         paths <- path
     }
-    toolarge <- file.info(paths)$size > .SW_UPLOAD_MAX_SIZE
-    if (any(toolarge))
-        stop(sum(toolarge), " files > 5 GB cannot be uploaded (yet):",
-             "\n  ", paste(sQuote(paths[toolarge]), collapse="\n  "))
+    .stop_for_upload_size(paths, file.info(paths)$size)
 
     if (missing(prefix)) {
         prefix <- ""
@@ -45,18 +42,7 @@ swupload <-
         pattern <- sprintf("^%s", root)
     }
     objects <- sub(pattern, prefix, paths)
-
-    if ((!"replace" %in% mode) &&
-        any(exist <- swexists(container, objects)))
-    {
-        idx <- head(which(exist))
-        stop(sum(exist), " object(s) already exist and 'mode' is not 'replace'",
-             "\n  mode: ", paste(sQuote(mode), collapse=", "),
-             "\n  container: ", sQuote(container),
-             "\n  path(s): ", paste(sQuote(paths)[idx], collapse=", "),
-             "\n  object(s): ", paste(sQuote(objects)[idx], collapse=", "),
-             call.=FALSE)
-    }
+    .stop_for_writable(container, objects, mode)
 
     curl <- RCurl::getCurlHandle()
     hdr <- .swauth(curl)
