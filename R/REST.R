@@ -26,6 +26,18 @@
            sprintf("/%s", RCurl::curlEscape(object)), query)
 }
 
+
+.RESTsave <-
+    function(curl, hdr, url, bin)
+{
+    auth <- sprintf("%s: %s", "X-Auth-Token", hdr[["X-Storage-Token"]])
+    httpheader <- c(auth, "content-type: application/octet-stream")
+    resp <- PUT(url, config(httpheader=httpheader), body=bin)
+    stop_for_status(resp)
+
+    basename(url)
+}
+
 .RESTupload <-
     function(curl, hdr, url, source)
 {
@@ -33,7 +45,7 @@
     resp <- PUT(url, config(httpheader=auth), body=upload_file(source))
     stop_for_status(resp)
     
-    source
+    basename(url)
 }
 
 .RESTread <-
