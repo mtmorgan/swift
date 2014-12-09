@@ -33,8 +33,6 @@ swupload <-
     } else {
         paths <- path
     }
-    .stop_for_upload_size(paths, file.info(paths)$size)
-
     if (missing(prefix)) {
         prefix <- ""
         pattern <- sprintf("^%s/", root)
@@ -42,7 +40,9 @@ swupload <-
         pattern <- sprintf("^%s", root)
     }
     objects <- sub(pattern, prefix, paths)
-    .stop_for_writable(container, objects, mode)
+
+    .stop_for_upload_size(file.info(paths)$size, paths)
+    .stop_for_writable(container, objects, mode, paths)
 
     curl <- RCurl::getCurlHandle()
     hdr <- .swauth(curl)
