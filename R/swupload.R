@@ -12,7 +12,7 @@
 }
 
 swupload <-
-    function(container, path=".", ..., prefix, mode=c("create", "replace"),
+    function(container, path=".", ..., prefix, mode=c("create", "replace", "skip"),
              verbose=TRUE)
 {
     stopifnot(.isString(container))
@@ -42,8 +42,16 @@ swupload <-
     objects <- sub(pattern, prefix, paths)
 
     .stop_for_upload_size(file.info(paths)$size, paths)
-    .stop_for_writable(container, objects, mode, paths)
-
+    idx<-.stop_for_writable(container, objects, mode, paths)
+    if(mode%in%"skip"){
+      if(length(idx)!=0)
+	      objects<-objects[idx]
+      else {
+        message("All objects already uploaded")
+        return(invisible())
+      }
+    }
+    
     curl <- RCurl::getCurlHandle()
     hdr <- .swauth(curl)
 

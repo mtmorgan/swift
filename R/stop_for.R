@@ -13,6 +13,10 @@
     function(container, objects, mode, paths)
 {
     exist <- swexists(container, objects)
+    if(mode%in%"skip"){
+	idx<-which(!exist)
+	return(idx)
+    }
     if ((!"replace" %in% mode) && any(exist)) {
         idx <- head(which(exist))
         stop(sum(exist), " object(s) already exist and 'mode' is not 'replace'",
