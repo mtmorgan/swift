@@ -10,12 +10,12 @@
 }
 
 .stop_for_writable <-
-    function(container, objects, mode, paths)
+    function(exist, mode, paths)
 {
-    exist <- swexists(container, objects)
-    if ((!"replace" %in% mode) && any(exist)) {
+    if (("create" %in% mode) && any(exist)) {
         idx <- head(which(exist))
-        stop(sum(exist), " object(s) already exist and 'mode' is not 'replace'",
+        stop(sum(exist),
+             " object(s) already exist and 'mode' is not 'replace' or 'skip'",
              "\n  mode: ", paste(sQuote(mode), collapse=", "),
              "\n  container: ", sQuote(container),
              "\n  paths: ", paste(sQuote(paths[idx]),

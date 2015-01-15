@@ -7,8 +7,8 @@
 
 }
 \usage{
-swupload(container, path=".", ..., prefix, mode=c("create", "replace"),
-    verbose=TRUE)
+swupload(container, path=".", ..., prefix,
+    mode=c("create", "replace", "skip"), verbose=TRUE)
 }
 
 \arguments{
@@ -27,7 +27,7 @@ swupload(container, path=".", ..., prefix, mode=c("create", "replace"),
 
   \item{mode}{(Optional) A character(1) indicating whether uploaded
     objects must not already exist (\code{"create"}) or existing objects
-    can be replaced (\code{"replace"}).}
+    can be replaced (\code{"replace"}), or existing objects may be skipped (\code{"skip"}.}
 
   \item{verbose}{A logical(1) specifying level of information provided
     during function evaluation.}

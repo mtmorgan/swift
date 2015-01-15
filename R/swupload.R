@@ -12,7 +12,7 @@
 }
 
 swupload <-
-    function(container, path=".", ..., prefix, mode=c("create", "replace"),
+    function(container, path=".", ..., prefix, mode=c("create", "replace", "skip"),
              verbose=TRUE)
 {
     stopifnot(.isString(container))
@@ -33,6 +33,8 @@ swupload <-
     } else {
         paths <- path
     }
+    .stop_for_upload_size(file.info(paths)$size, paths)
+
     if (missing(prefix)) {
         prefix <- ""
         pattern <- sprintf("^%s/", root)
@@ -40,14 +42,17 @@ swupload <-
         pattern <- sprintf("^%s", root)
     }
     objects <- sub(pattern, prefix, paths)
+    exist <- swexists(container, objects)
+    .stop_for_writable(exist, mode, paths)
 
-    .stop_for_upload_size(file.info(paths)$size, paths)
-    .stop_for_writable(container, objects, mode, paths)
+    upload <- if ("skip" %in% mode) !exist else TRUE
+    if (verbose && ("skip" %in mode) && any(exist))
+        message(sum(exist), " existing object(s) skipped")
 
     curl <- RCurl::getCurlHandle()
     hdr <- .swauth(curl)
 
-    for (i in seq_along(paths))
+    for (i in seq_along(paths)[upload])
         .swupload_file(curl, hdr, container, objects[[i]], paths[[i]], verbose)
     setNames(objects, paths)
 }
