@@ -10,7 +10,7 @@
 }
 
 .stop_for_writable <-
-    function(exist, mode, paths)
+    function(exist, container, objects, mode, paths)
 {
     if (("create" %in% mode) && any(exist)) {
         idx <- head(which(exist))

@@ -12,8 +12,8 @@
 }
 
 swupload <-
-    function(container, path=".", ..., prefix, mode=c("create", "replace", "skip"),
-             verbose=TRUE)
+    function(container, path=".", ..., prefix,
+             mode=c("create", "replace", "skip"), verbose=TRUE)
 {
     stopifnot(.isString(container))
     stopifnot(.isString(path))
@@ -43,10 +43,10 @@ swupload <-
     }
     objects <- sub(pattern, prefix, paths)
     exist <- swexists(container, objects)
-    .stop_for_writable(exist, mode, paths)
+    .stop_for_writable(exist, container, objects, mode, paths)
 
     upload <- if ("skip" %in% mode) !exist else TRUE
-    if (verbose && ("skip" %in mode) && any(exist))
+    if (verbose && ("skip" %in% mode) && any(exist))
         message(sum(exist), " existing object(s) skipped")
 
     curl <- RCurl::getCurlHandle()
